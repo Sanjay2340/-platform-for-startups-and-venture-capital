@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="StartInvest Hub: Connect with startups, investors, and groups through professional chat features.">
+    <title>StartInvest Hub - Chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.7;
+            color: #2d3748;
+            background-color: #f7fafc;
+            overflow-x: hidden;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        ul {
+            list-style: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Header and Navigation */
+        header {
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            animation: slideIn 0.5s ease-out;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a73e8;
+            transition: color 0.3s;
+        }
+        .logo:hover {
+            color: #1557b0;
+        }
+        nav ul {
+            display: flex;
+            gap: 1.5rem;
+        }
+        nav ul li a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+        nav ul li a:hover {
+            color: #1a73e8;
+            background-color: #f1f3f4;
+            transform: translateY(-2px);
+        }
+        @media (max-width: 320px) {
+            nav {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.5rem 3%;
+            }
+            .logo {
+                font-size: 1.3rem;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                justify-content: center;
+            }
+            nav ul li a {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.6rem;
+            }
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 80px 5%;
+            max-width: 1280px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 60px;
+            background-color: #fff;
+        }
+        .section.gradient {
+            background: linear-gradient(135deg, #f0f4f8, #e2e8f0);
+        }
+        .section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #1a73e8;
+            opacity: 0;
+            animation: slideInRight 0.8s ease-out forwards;
+        }
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .section-card {
+            background-color: #f7fafc;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            text-align: left;
+            opacity: 0;
+            animation: scaleIn 0.8s ease-out forwards;
+            will-change: transform, opacity;
+        }
+        .section-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+        .section-card img {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: zoomIn 0.8s ease-out forwards;
+        }
+        .section-card .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+        .section-card h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1a73e8;
+        }
+        .section-card p {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-bottom: 1rem;
+        }
+        .message-meta {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-bottom: 1rem;
+        }
+        .message-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-start;
+        }
+        .btn {
+            background-color: #1a73e8;
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            will-change: transform;
+        }
+        .btn:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+            animation: bounce 0.6s;
+        }
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid #1a73e8;
+            color: #1a73e8;
+        }
+        .btn-secondary:hover {
+            background-color: rgba(26, 115, 232, 0.1);
+        }
+        .chat-form {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            animation: scaleIn 0.8s ease-out;
+        }
+        .chat-form input, .chat-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .chat-form textarea {
+            resize: vertical;
+        }
+        .chat-form input:focus, .chat-form textarea:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 5px rgba(26, 115, 232, 0.3);
+        }
+        @media (max-width: 320px) {
+            .section {
+                padding: 60px 3%;
+            }
+            .section h2 {
+                font-size: 1.8rem;
+            }
+            .section-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .section-card {
+                padding: 1rem;
+            }
+            .section-card img {
+                max-width: 150px;
+            }
+            .section-card .avatar {
+                width: 30px;
+                height: 30px;
+            }
+            .section-card h3 {
+                font-size: 1.2rem;
+            }
+            .section-card p, .message-meta {
+                font-size: 0.8rem;
+            }
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+            .chat-form {
+                padding: 1rem;
+            }
+            .chat-form input, .chat-form textarea {
+                font-size: 0.8rem;
+                padding: 0.6rem;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2d3748;
+            color: #fff;
+            padding: 2rem 5%;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .footer-content p {
+            font-size: 0.9rem;
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        .social-links a {
+            font-size: 1rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .social-links a:hover {
+            color: #1a73e8;
+            transform: translateY(-2px);
+            animation: bounce 0.6s;
+        }
+        @media (max-width: 320px) {
+            footer {
+                padding: 1.5rem 3%;
+            }
+            .footer-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .footer-content p, .social-links a {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Scroll Animation Trigger */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">StartInvest Hub</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="posts.html">Posts</a></li>
+                <li><a href="profiles.html">Profiles</a></li>
+                <li><a href="network.html">Network</a></li>
+                <li><a href="ideas.html">Ideas</a></li>
+                <li><a href="chat.html">Chat</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Start a Chat Section -->
+    <section class="section animate-on-scroll" id="start-chat">
+        <h2>Start a New Chat</h2>
+        <div class="chat-form">
+            <form onsubmit="sendMessage(event)">
+                <input type="text" id="chatRecipient" placeholder="Search for a contact (e.g., Jane Doe)..." required aria-label="Recipient">
+                <textarea id="chatMessage" placeholder="Type your message..." rows="5" maxlength="500" required aria-label="Message"></textarea>
+                <button type="submit" class="btn">Send Message</button>
+            </form>
+        </div>
+        <div class="section-grid">
+            <div class="section-card">
+                <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Chat Tips">
+                <h3>Chat Etiquette</h3>
+                <p>Learn best practices for professional communication.</p>
+                <a href="#" class="btn">Read Guide</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Group Chats Section -->
+    <section class="section gradient animate-on-scroll" id="group-chats">
+        <h2>Join Group Chats</h2>
+        <div class="section-grid">
+            <div class="section-card">
+                <img src="https://images.unsplash.com/photo-1620121692029-d088224ddc74?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="AI Innovators">
+                <h3>AI Innovators Group</h3>
+                <p>Discuss AI-driven startups and technologies.</p>
+                <a href="#" class="btn" onclick="joinGroup('AI Innovators')">Join Group</a>
+            </div>
+            <div class="section-card">
+                <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Green Tech">
+                <h3>Green Tech Community</h3>
+                <p>Collaborate on sustainable energy solutions.</p>
+                <a href="#" class="btn" onclick="joinGroup('Green Tech')">Join Group</a>
+            </div>
+            <div class="section-card">
+                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="HealthTech">
+                <h3>HealthTech Network</h3>
+                <p>Connect with healthcare technology innovators.</p>
+                <a href="#" class="btn" onclick="joinGroup('HealthTech')">Join Group</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Messages Section -->
+    <section class="section animate-on-scroll" id="recent-messages">
+        <h2>Recent Messages</h2>
+        <div class="section-grid">
+            <div class="section-card">
+                <div class="message-meta">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf3356de?ixlib=rb-4.0.3&auto=format&fit=crop&w=40&q=80" alt="User Avatar" class="avatar">
+                    <span>Jane Doe • Oct 25, 2025, 10:30 AM</span>
+                </div>
+                <p>Hi! Excited to discuss your AI diagnostics idea. Can we set up a call?</p>
+                <div class="message-actions">
+                    <button class="btn btn-secondary" onclick="replyMessage(1)">Reply</button>
+                    <button class="btn btn-secondary" onclick="archiveMessage(1)">Archive</button>
+                </div>
+            </div>
+            <div class="section-card">
+                <div class="message-meta">
+                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=40&q=80" alt="User Avatar" class="avatar">
+                    <span>John Smith • Oct 24, 2025, 3:15 PM</span>
+                </div>
+                <p>Thanks for the pitch! Let’s explore funding options for your solar project.</p>
+                <div class="message-actions">
+                    <button class="btn btn-secondary" onclick="replyMessage(2)">Reply</button>
+                    <button class="btn btn-secondary" onclick="archiveMessage(2)">Archive</button>
+                </div>
+            </div>
+            <div class="section-card">
+                <div class="message-meta">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=40&q=80" alt="User Avatar" class="avatar">
+                    <span>Emily Chen • Oct 23, 2025, 9:00 AM</span>
+                </div>
+                <p>Interested in your blockchain payment solution. Can you share more details?</p>
+                <div class="message-actions">
+                    <button class="btn btn-secondary" onclick="replyMessage(3)">Reply</button>
+                    <button class="btn btn-secondary" onclick="archiveMessage(3)">Archive</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 StartInvest Hub. All Rights Reserved.</p>
+            <div class="social-links">
+                <a href="#" aria-label="LinkedIn">LinkedIn</a>
+                <a href="#" aria-label="Twitter">Twitter</a>
+                <a href="#" aria-label="Facebook">Facebook</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Animation Trigger
+        function handleScrollAnimations() {
+            const sections = document.querySelectorAll('.animate-on-scroll');
+            const triggerBottom = window.innerHeight * 0.8;
+
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                if (sectionTop < triggerBottom) {
+                    section.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleScrollAnimations);
+        window.addEventListener('load', handleScrollAnimations);
+
+        // Simulated Message Sending
+        function sendMessage(event) {
+            event.preventDefault();
+            const recipient = document.getElementById('chatRecipient').value.trim();
+            const message = document.getElementById('chatMessage').value.trim();
+            if (recipient && message) {
+                alert(`Message sent to ${recipient}: ${message} (Demo; integrate with a backend.)`);
+                event.target.reset();
+            } else {
+                alert('Please enter a recipient and message.');
+            }
+        }
+
+        // Simulated Group Joining
+        function joinGroup(groupName) {
+            alert(`Joined ${groupName} group! (Demo; integrate with a backend.)`);
+        }
+
+        // Simulated Message Interactions
+        function replyMessage(messageId) {
+            alert(`Replying to message ${messageId}... (Demo; integrate with a backend.)`);
+        }
+
+        function archiveMessage(messageId) {
+            alert(`Message ${messageId} archived! (Demo; integrate with a backend.)`);
+        }
+    </script>
+</body>
+</html>
